@@ -219,7 +219,7 @@ viewer.removeModel(1); // supprime le 2e modele
 |---|---|---|---|
 | `objectIndex` | `number` | `0` | Index du model à supprimer |
 
-> [!CAUTION]
+> [!ATTENTION]
 > Impossible de supprimer le dernier model restant.
 
 ---
