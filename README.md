@@ -346,6 +346,33 @@ viewer.addSVGText("Mon texte", {
 
 ---
 
+### `loadFonts(fonts)`
+
+Charge une liste de polices dans le viewer avant de les utiliser avec `addSVGText()`.
+
+Deux sources sont supportées : **Google Fonts** (nom uniquement) et **polices personnalisées** (fichier `.woff2` local ou distant).
+
+```js
+viewer.loadFonts([
+  { family: 'Bebas Neue' },                                        // Google Font
+  { family: 'MaFont', url: '/fonts/ma-font.woff2' },              // police locale
+  { family: 'AutreFont', url: 'https://example.com/font.woff2' }, // police distante
+]);
+```
+
+| Propriété | Type | Requis | Description |
+|---|---|---|---|
+| `family` | `string` | ✅ | Nom de la police (tel qu'utilisé dans `fontFamily`) |
+| `url` | `string` | — | URL du fichier `.woff2`. Omis pour une Google Font |
+
+> [!NOTE]
+> Les polices personnalisées doivent obligatoirement être au format **woff2**.
+
+> [!IMPORTANT]
+> Appeler `loadFonts()` avant tout `addSVGText()` utilisant ces polices, afin de garantir qu'elles sont bien chargées au moment du rendu.
+
+---
+
 ### `addSVGImage(source, opts)` *(async)*
 
 Ajoute une image dans une dropzone du SVG. Accepte un objet `File` ou un `ArrayBuffer`.
