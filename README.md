@@ -1,6 +1,6 @@
 # api
 
-https://cdn.jsdelivr.net/gh/3dvue/api@v4.0.0/viewer-3dvue-min.js
+https://cdn.jsdelivr.net/gh/3dvue/api@v4/viewer-3dvue-min.js
 
 # Documentation — `<viewer-3dvue>`
 
