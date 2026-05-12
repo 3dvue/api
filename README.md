@@ -451,6 +451,17 @@ viewer.removeSVGElement();
 
 ---
 
+### `showSVG2D()` / `hideSVG2D()`
+
+Affiche ou masque la vue 2D de la map SVG dans le viewer.
+
+```js
+viewer.showSVG2D(); // affiche la vue 2D
+viewer.hideSVG2D(); // masque la vue 2D
+```
+
+---
+
 ### Événements SVG
 
 | Événement | `e.detail` | Description |
