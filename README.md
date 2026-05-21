@@ -68,7 +68,7 @@ La liste des matériaux disponibles (ID + nom) est disponible sous forme de csv 
 Inclure le script du composant dans la page :
 
 ```html
-<script src="viewer-3dvue.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/3dvue/api@v4/viewer-3dvue-min.js"></script>
 ```
 
 ---
