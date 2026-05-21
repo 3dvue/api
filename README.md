@@ -171,6 +171,11 @@ Récupérer la référence du composant :
 
 ```js
 const viewer = document.querySelector('viewer-3dvue[name="monViewer"]');
+
+viewer.addEventListener("onLoadComplete", () => {
+  // le viewer est prêt, on peut appeler les méthodes
+  viewer.setMaterial({ "1": "01" });
+});
 ```
 
 > [!WARNING]
