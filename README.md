@@ -411,9 +411,9 @@ Modifie un paramètre d'un élément SVG existant.
 
 ```js
 // Cibler un élément par son id
-viewer.setSVGElementParam("fill", "#ff0000", "img-1234567890");
+viewer.setSVGElementParam("fill", "#ff0000", "element-id");
 
-// Cibler l'élément actuellement sélectionné dans le viewer
+// Cibler l'élément actuellement sélectionné
 viewer.setSVGElementParam("opacity", 0.5, null);
 ```
 
@@ -432,10 +432,22 @@ Les paramètres disponibles incluent notamment :
 | `opacity` | Opacité (0 à 1) |
 | `angle` | Rotation en degrés |
 | `scaleX` / `scaleY` | Échelle sur chaque axe |
+| `colorStop.0`, `colorStop.1`, ... | Couleur d'une étape du dégradé (voir ci-dessous) |
+
+#### Modifier un dégradé
+
+Pour modifier les couleurs d'un dégradé, utiliser `colorStop.N` où `N` est l'index de l'étape (commence à `0`). L'`id` à fournir est celui du **calque** portant le dégradé, pas l'id du dégradé SVG lui-même.
+
+```js
+// Modifier la première couleur du dégradé du calque "color-degrade"
+viewer.setSVGElementParam("colorStop.0", "#ff0000", "color-degrade");
+
+// Modifier la deuxième couleur
+viewer.setSVGElementParam("colorStop.1", "#0000ff", "color-degrade");
+```
 
 > [!NOTE]
-> L'`id` d'un élément ajouté dynamiquement est retourné par `addSVGText()` et `addSVGImage()`.
-
+> L'`id` d'un élément ajouté dynamiquement est retourné par `addSVGText()` et `addSVGImage()`. Il suit le format `text-{timestamp}` ou `img-{timestamp}`.
 ---
 
 ### `removeSVGElement(id)`
