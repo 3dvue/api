@@ -1,0 +1,55 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/gh/3dvue/api@v4/viewer-3dvue-min.js"></script>
+    <style>
+        viewer-3dvue { width: 100%; min-height: 500px; }
+        #preview-box {
+            width: 256px; height: 256px;
+            border: 1px solid #dee2e6; border-radius: 4px;
+            background: #f8f9fa;
+            display: flex; align-items: center; justify-content: center;
+            margin-top: 12px; overflow: hidden;
+        }
+        #preview-placeholder { color: #adb5bd; font-size: 13px; }
+        #preview { width: 100%; height: 100%; object-fit: cover; display: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <h4 class="mt-4 mb-3">svg-capture</h4>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">captureSVGToBase64()</h5>
+            <p class="text-muted">Capture le canvas SVG 2D en PNG 1024×1024.</p>
+            <button id="btn-capture" class="btn btn-primary">Capturer le BAT</button>
+            <div id="preview-box">
+                <span id="preview-placeholder">En attente de capture...</span>
+                <img id="preview" src="" alt="preview">
+            </div>
+        </div>
+    </div>
+
+    <viewer-3dvue name="demo" src="https://demo-api.3dvue.fr/?p=020b"></viewer-3dvue>
+
+</div>
+<script>
+    const viewer      = document.querySelector('viewer-3dvue[name="demo"]');
+    const preview     = document.getElementById('preview');
+    const placeholder = document.getElementById('preview-placeholder');
+
+    document.getElementById('btn-capture').addEventListener('click', () => viewer.captureSVGToBase64());
+
+    viewer.addEventListener('onCaptureSVGBase64Complete', (e) => {
+        if (e.detail.error) { console.error(e.detail.error); return; }
+        preview.src = e.detail.base64;
+        preview.style.display = 'block';
+        placeholder.style.display = 'none';
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/gh/3dvue/api@v4/viewer-3dvue-min.js"></script>
+    <style> viewer-3dvue { width: 100%; min-height: 500px; } </style>
+</head>
+<body>
+<div class="container">
+
+    <h4 class="mt-4 mb-3">svg-export</h4>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">exportSVG()</h5>
+            <p class="text-muted">Upload le canvas SVG sur le serveur. L'événement <code>onSVGExportComplete</code> retourne le chemin du fichier ou une erreur.</p>
+            <button id="btn-export" class="btn btn-primary">exportSVG()</button>
+            <div id="result" class="mt-2" style="display:none">
+                <span class="badge badge-success" id="result-ok"></span>
+                <span class="badge badge-danger" id="result-err"></span>
+            </div>
+        </div>
+    </div>
+
+    <viewer-3dvue name="demo" src="http://localhost/github/site-3dvue/?p=0e1j"></viewer-3dvue>
+
+</div>
+<script>
+    const viewer = document.querySelector('viewer-3dvue[name="demo"]');
+
+    document.getElementById('btn-export').addEventListener('click', () => viewer.exportSVG());
+
+    viewer.addEventListener('onSVGExportComplete', (e) => {
+        document.getElementById('result').style.display = 'block';
+        if (e.detail.error) {
+            document.getElementById('result-err').textContent = e.detail.error;
+            document.getElementById('result-ok').textContent  = '';
+        } else {
+            document.getElementById('result-ok').textContent  = e.detail.path;
+            document.getElementById('result-err').textContent = '';
+        }
+    });
+</script>
+</body>
+</html>

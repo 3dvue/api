@@ -1,0 +1,198 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/gh/3dvue/api@v4/viewer-3dvue-min.js"></script>
+    <style>
+        viewer-3dvue { width: 100%; min-height: 500px; }
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .upload-btn {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .upload-btn input[type=file] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            font-size: 0;
+        }
+
+        .slider-row {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .slider-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            min-width: 200px;
+        }
+        .slider-group label {
+            font-size: 13px;
+            color: #6c757d;
+            margin: 0;
+            white-space: nowrap;
+            width: 60px;
+        }
+        .slider-group input[type=range] {
+            flex: 1;
+        }
+        .slider-group .val {
+            font-size: 13px;
+            color: #495057;
+            width: 36px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <h4 class="mt-4 mb-3">svg-add-image</h4>
+
+    <div class="card mb-3">
+        <div class="card-body">
+
+            <div class="toolbar">
+
+                <div class="btn-group btn-group-sm" role="group">
+                    <button type="button" class="btn btn-outline-secondary active" data-zone="dropzone-image-gauche">Coeur gauche</button>
+                    <button type="button" class="btn btn-outline-secondary" data-zone="dropzone-image-droite">Coeur droit</button>
+                </div>
+
+                <label class="upload-btn btn btn-primary btn-sm mb-0">
+                    ＋ Choisir une image
+                    <input type="file" id="input-file" accept="image/png,image/jpeg,image/svg+xml,application/pdf">
+                </label>
+
+                <button id="btn-export" type="button" class="btn btn-sm btn-success ml-auto">Générer le BAT</button>
+                <button id="btn-delete" type="button" class="btn btn-sm btn-outline-danger" disabled>🗑 Supprimer</button>
+
+            </div>
+
+            <div class="slider-row">
+                <div class="slider-group">
+                    <label>Scale</label>
+                    <input type="range" id="scale-range" min="0.1" max="3" step="0.05" value="1">
+                    <span class="val" id="scale-val">1</span>
+                </div>
+                <div class="slider-group">
+                    <label>Rotation</label>
+                    <input type="range" id="angle-range" min="0" max="360" step="1" value="0">
+                    <span class="val" id="angle-val">0°</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <viewer-3dvue name="demo" src="https://demo-api.3dvue.fr/?p=020b"></viewer-3dvue>
+
+</div>
+<script>
+    const viewer   = document.querySelector('viewer-3dvue[name="demo"]');
+    const btnDel   = document.getElementById('btn-delete');
+    let selectedId = null;
+    let dropzone   = 'dropzone-image-gauche';
+
+    // Sélection de la dropzone
+    document.querySelectorAll('[data-zone]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('[data-zone]').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            dropzone = btn.dataset.zone;
+        });
+    });
+
+    // Ajout d'une image
+    document.getElementById('input-file').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        viewer.addSVGImage(file, { dropzone });
+        e.target.value = '';
+        resetSliders();
+    });
+
+    // Export + téléchargement
+    const btnExport = document.getElementById('btn-export');
+    btnExport.addEventListener('click', () => {
+        btnExport.textContent = '⏳ Génération...';
+        btnExport.disabled = true;
+        viewer.exportSVG();
+    });
+    viewer.addEventListener('onSVGExportComplete', (e) => {
+        btnExport.textContent = 'Générer le BAT';
+        btnExport.disabled = false;
+        if (e.detail.error) { console.error(e.detail.error); return; }
+        let btnDl = document.getElementById('btn-voir-bat');
+        if (!btnDl) {
+            btnDl = document.createElement('a');
+            btnDl.id = 'btn-voir-bat';
+            btnDl.target = '_blank';
+            btnDl.className = 'btn btn-sm btn-outline-success';
+            btnDl.textContent = '👁 Voir le BAT';
+            btnExport.insertAdjacentElement('afterend', btnDl);
+        }
+        btnDl.href = e.detail.path;
+    });
+
+    // Suppression
+    btnDel.addEventListener('click', () => viewer.removeSVGElement());
+
+    // Sélection → sync sliders
+    viewer.addEventListener('onSVGObjectSelected', (e) => {
+        const obj = e.detail.obj;
+        selectedId = obj.id;
+        btnDel.disabled = false;
+        if (obj.scale != null) setSlider('scale', obj.scale, obj.scale);
+        if (obj.angle != null) setSlider('angle', obj.angle, Math.round(obj.angle) + '°');
+    });
+
+    // Désélection → reset
+    viewer.addEventListener('onSVGObjectDeselected', () => {
+        selectedId = null;
+        btnDel.disabled = true;
+        resetSliders();
+    });
+
+    // Scale
+    document.getElementById('scale-range').addEventListener('input', (e) => {
+        document.getElementById('scale-val').textContent = e.target.value;
+        if (selectedId) {
+            viewer.setSVGElementParam('scaleX', parseFloat(e.target.value));
+            viewer.setSVGElementParam('scaleY', parseFloat(e.target.value));
+        }
+    });
+
+    // Rotation
+    document.getElementById('angle-range').addEventListener('input', (e) => {
+        document.getElementById('angle-val').textContent = e.target.value + '°';
+        if (selectedId) viewer.setSVGElementParam('angle', parseFloat(e.target.value));
+    });
+
+    function setSlider(id, value, label) {
+        document.getElementById(id + '-range').value      = value;
+        document.getElementById(id + '-val').textContent  = label;
+    }
+
+    function resetSliders() {
+        setSlider('scale', 1, 1);
+        setSlider('angle', 0, '0°');
+    }
+</script>
+</body>
+</html>

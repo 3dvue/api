@@ -1,0 +1,41 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/gh/3dvue/api@v4/viewer-3dvue-min.js"></script>
+    <style> viewer-3dvue { width: 100%; min-height: 500px; } </style>
+</head>
+<body>
+<div class="container">
+
+    <h4 class="mt-4 mb-3">svg-2d</h4>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">showSVG2D() / hideSVG2D()</h5>
+            <button id="btn-toggle" class="btn btn-primary" data-mode="3d">Passer en 2D</button>
+        </div>
+    </div>
+
+    <viewer-3dvue name="demo" src="https://demo-api.3dvue.fr/?p=020b"></viewer-3dvue>
+
+</div>
+<script>
+    const viewer = document.querySelector('viewer-3dvue[name="demo"]');
+    const btn    = document.getElementById('btn-toggle');
+
+    btn.addEventListener('click', () => {
+        if (btn.dataset.mode === '3d') {
+            viewer.showSVG2D();
+            btn.textContent  = 'Passer en 3D';
+            btn.dataset.mode = '2d';
+        } else {
+            viewer.hideSVG2D();
+            btn.textContent  = 'Passer en 2D';
+            btn.dataset.mode = '3d';
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/gh/3dvue/api@v4/viewer-3dvue-min.js"></script>
+    <style> viewer-3dvue { width: 100%; min-height: 500px; } </style>
+</head>
+<body>
+<div class="container">
+
+    <h4 class="mt-4 mb-3">set-material</h4>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">setMaterial(materialList)</h5>
+            <button class="btn btn-dark mr-2" material-list='{"1":"01","2":"05","3":"04","4":"0c"}'>Configuration 1</button>
+            <button class="btn" style="background-color:#6f42c1;border-color:#6f42c1;color:#fff" material-list='{"1":"02","2":"08","3":"0i","4":"0f"}'>Configuration 2</button>
+        </div>
+    </div>
+
+    <viewer-3dvue name="demo" src="https://demo-api.3dvue.fr/?p=010105040c"></viewer-3dvue>
+
+</div>
+<script>
+    const viewer = document.querySelector('viewer-3dvue[name="demo"]');
+    document.querySelectorAll('[material-list]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            viewer.setMaterial(JSON.parse(btn.getAttribute('material-list')));
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/gh/3dvue/api@v4/viewer-3dvue-min.js"></script>
+    <style> viewer-3dvue { width: 100%; min-height: 500px; } </style>
+</head>
+<body>
+<div class="container">
+
+    <h4 class="mt-4 mb-3">simple-material-button</h4>
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">Choix de tissu</h5>
+            <button class="btn btn-dark mr-2"
+                    viewer-3dvue="demo"
+                    viewer-3dvue-clic="setMaterial"
+                    viewer-3dvue-meshs-materials='{"3":"04"}'>
+                Cuir noir
+            </button>
+            <button class="btn mr-2" style="background-color:#6f42c1;border-color:#6f42c1;color:#fff"
+                    viewer-3dvue="demo"
+                    viewer-3dvue-clic="setMaterial"
+                    viewer-3dvue-meshs-materials='{"3":"0i"}'>
+                Velour
+            </button>
+        </div>
+    </div>
+
+    <viewer-3dvue name="demo" src="https://demo-api.3dvue.fr/?p=010105040c"></viewer-3dvue>
+
+</div>
+</body>
+</html>

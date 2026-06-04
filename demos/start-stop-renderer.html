@@ -1,0 +1,31 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/gh/3dvue/api@v4/viewer-3dvue-min.js"></script>
+    <style> viewer-3dvue { width: 100%; min-height: 500px; } </style>
+</head>
+<body>
+<div class="container">
+
+    <h4 class="mt-4 mb-3">start-stop-renderer</h4>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">Renderer</h5>
+            <button id="btn-pause" class="btn btn-warning mr-2">pauseRenderer()</button>
+            <button id="btn-start" class="btn btn-success">startRenderer()</button>
+        </div>
+    </div>
+
+    <viewer-3dvue name="demo" src="https://demo-api.3dvue.fr/?p=010105040c"></viewer-3dvue>
+
+</div>
+<script>
+    const viewer = document.querySelector('viewer-3dvue[name="demo"]');
+    document.getElementById('btn-pause').addEventListener('click', () => viewer.pauseRenderer());
+    document.getElementById('btn-start').addEventListener('click', () => viewer.startRenderer());
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/gh/3dvue/api@v4/viewer-3dvue-min.js"></script>
+    <style> viewer-3dvue { width: 100%; min-height: 500px; } </style>
+</head>
+<body>
+<div class="container">
+
+    <h4 class="mt-4 mb-3">load-model</h4>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">loadModel(id)</h5>
+            <p class="text-muted">Charge un modèle complet par son identifiant URL.</p>
+            <button class="btn btn-primary mr-2" data-id="010105040c">Modèle 1</button>
+            <button class="btn btn-secondary" data-id="030l0o">Modèle 2</button>
+        </div>
+    </div>
+
+    <viewer-3dvue name="demo" src="https://demo-api.3dvue.fr/?p=010105040c"></viewer-3dvue>
+
+</div>
+<script>
+    const viewer = document.querySelector('viewer-3dvue[name="demo"]');
+    document.querySelectorAll('[data-id]').forEach(btn => {
+        btn.addEventListener('click', () => viewer.loadModel(btn.dataset.id));
+    });
+</script>
+</body>
+</html>
