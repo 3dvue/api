@@ -479,6 +479,30 @@ viewer.hideSVG2D(); // masque la vue 2D
 
 ---
 
+### `captureSVGToBase64()`
+
+Capture la texture SVG utilisée par le viewer en image base64 (1024×1024). Le résultat est retourné via un événement.
+
+```js
+viewer.captureSVGToBase64();
+
+viewer.addEventListener("onCaptureSVGBase64Complete", (e) => {
+  const { base64, error } = e.detail;
+  if (error) { console.error(error); return; }
+  document.querySelector("img").src = base64;
+});
+```
+
+**Événement :** `onCaptureSVGBase64Complete`
+
+| `e.detail` | Type | Description |
+|---|---|---|
+| `base64` | `string` | Image de la texture SVG encodée en base64 |
+| `error` | `string \| null` | Message d'erreur si échec |
+
+
+---
+
 ### Événements SVG
 
 | Événement | `e.detail` | Description |
