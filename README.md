@@ -269,12 +269,14 @@ viewer.startRenderer();
 
 ---
 
-### `captureToBase64()`
+### `captureToBase64(opts)`
 
-Capture le rendu courant en image base64. Le résultat est retourné via un événement.
+Capture le rendu courant en image base64. La caméra peut être positionnée sur une vue prédéfinie. Le résultat est retourné via un événement.
 
 ```js
-viewer.captureToBase64();
+viewer.captureToBase64(); // capture depuis l'angle de vue actuel
+
+viewer.captureToBase64({ position: "top" }); // capture depuis le dessus
 
 viewer.addEventListener("onCaptureBase64Complete", (e) => {
   const { base64, error } = e.detail;
@@ -282,6 +284,17 @@ viewer.addEventListener("onCaptureBase64Complete", (e) => {
   document.querySelector("img").src = base64;
 });
 ```
+
+| Paramètre | Type | Défaut | Description |
+|---|---|---|---|
+| `opts` | `Object` | `{}` | Options de capture |
+
+| Option | Type | Défaut | Description |
+|---|---|---|---|
+| `position` | `string` | `"current"` | Angle de caméra pour la capture : `"top"`, `"bottom"`, `"left"`, `"right"`, `"front"`, `"back"`, `"initial"`, `"current"` |
+
+> [!NOTE]
+> `"current"` capture depuis l'angle actuel de la caméra (sans la déplacer). `"initial"` capture depuis la position de caméra par défaut du modèle. Les autres valeurs positionnent la caméra sur la face correspondante.
 
 **Événement :** `onCaptureBase64Complete`
 
